@@ -1,0 +1,2 @@
+Olá da impressora!
+Esse texto foi enviado direto pelo Python.

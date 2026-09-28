@@ -1,7 +1,8 @@
 import socket
-import ollama
+from ollama import chat
+
 # Configurações
-HOST = '127.0.0.1'  # Endereço local (mesma máquina)
+HOST = socket.gethonstname()  # Endereço local (mesma máquina)
 PORTA = 5000         # Porta (acima de 1024)
 
 # Cria o socket TCP/IP
@@ -20,6 +21,7 @@ try:
     while True:
         # Recebe dados (máximo 1024 bytes)
         dados = conexao.recv(1024)
+        resposta = ollama.chat(model = "ollama3", messages=[{"role":"user", "content":"{dados}"}])
         if not dados:
             break  # Cliente fechou a conexão
         
@@ -27,8 +29,8 @@ try:
         print(f"📩 Cliente: {mensagem}")
         
         # Responde ao cliente
-        resposta = input("Digite sua resposta: ")
         conexao.sendall(resposta.encode('utf-8'))
+        print(resposta['messages']['content'])
 
 except KeyboardInterrupt:
     print("\n⚠️ Encerrando servidor...")
